@@ -16,6 +16,8 @@ data class Exo(
     @StringRes val description: Int
 )
 
+//My listOf exercises to be used by the app
+
 val exos = listOf(
     Exo(R.drawable.gobletsquatstart, R.string.exercise_1, 4,10,R.string.exercise_description_1)
 )
