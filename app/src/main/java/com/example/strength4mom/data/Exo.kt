@@ -9,8 +9,7 @@ import com.example.strength4mom.R
  */
 
 data class Exo(
-    @DrawableRes val imageResourceID1: Int,
-    @DrawableRes val imageResourceID2: Int,
+    @DrawableRes val imageResourceID: Int,
     @StringRes val name: Int,
     val numberSet: Int,
     val numberRep: Int,
@@ -18,5 +17,5 @@ data class Exo(
 )
 
 val exos = listOf(
-    Exo(1,2, R.string.exercise_1, 4,10,R.string.exercise_description_1)
+    Exo(R.drawable.gobletsquatstart, R.string.exercise_1, 4,10,R.string.exercise_description_1)
 )
