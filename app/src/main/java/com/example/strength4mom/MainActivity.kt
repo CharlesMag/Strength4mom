@@ -13,11 +13,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontStyle
 import com.example.strength4mom.data.Exo
 import com.example.strength4mom.data.exos
 import com.example.strength4mom.ui.theme.Strength4MomTheme
@@ -76,20 +79,31 @@ fun ExoItem(
 @Composable
 fun ExoInfo(
     @StringRes exoName: Int,
-    @StringRes exoSets: Int,
-    @StringRes exoReps: Int,
+    exoSets: Int,
+    exoReps: Int,
     modifier: Modifier = Modifier
 ) {
     Column(
         modifier = modifier
+            .fillMaxWidth()
     ) {
-        Text(text = "Goblet Squat")
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-        ) {
-            Text(text = "Sets: 4")
-            Text(text = "Reps: 15")
+        Text(
+            text = stringResource(exoName),
+            style = MaterialTheme.typography.displayMedium
+        )
+        Row {
+            Text(
+                text = stringResource(R.string.sets, exoSets),
+                style = MaterialTheme.typography.displaySmall,
+                modifier = modifier
+                    .weight(1f)
+            )
+            Text(
+                text = stringResource(R.string.reps, exoReps),
+                style = MaterialTheme.typography.displaySmall,
+                modifier = modifier
+                    .weight(1f)
+            )
         }
     }
 }

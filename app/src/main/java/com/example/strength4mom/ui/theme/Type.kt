@@ -35,6 +35,11 @@ val Typography = Typography(
         fontWeight = FontWeight.Bold,
         fontSize = 20.sp
     ),
+    displaySmall = TextStyle(
+        fontFamily = LaoSansLao,
+        fontWeight = FontWeight.Normal,
+        fontSize = 14.sp
+    ),
     labelSmall = TextStyle(
         fontFamily = LaoSansLao,
         fontWeight = FontWeight.Bold,
