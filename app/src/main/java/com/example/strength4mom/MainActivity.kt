@@ -26,6 +26,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
@@ -104,7 +105,9 @@ fun ExoInfo(
             text = stringResource(exoName),
             style = MaterialTheme.typography.displayMedium
         )
-        Row {
+        Row(
+            verticalAlignment = Alignment.CenterVertically
+        ) {
             Text(
                 text = stringResource(R.string.sets, exoSets),
                 style = MaterialTheme.typography.displaySmall,
