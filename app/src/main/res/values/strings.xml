@@ -12,5 +12,7 @@
     <string name="exercise_description_5">Here goes the description of the exercise</string>
     <string name="reps">Reps: %d</string>
     <string name="sets">Sets: %d</string>
+    <string name="expand_button">Displays the visual aid for the exercise with additional information</string>
+
 
 </resources>
