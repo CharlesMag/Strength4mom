@@ -22,6 +22,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -33,6 +34,7 @@ import androidx.compose.ui.res.stringResource
 import com.example.strength4mom.data.Exo
 import com.example.strength4mom.data.exos
 import com.example.strength4mom.ui.theme.Strength4MomTheme
+import kotlinx.coroutines.flow.MutableStateFlow
 
 
 class MainActivity : ComponentActivity() {
@@ -53,6 +55,8 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
+
+
 
 @Composable
 fun StrengthApp() {
@@ -78,6 +82,10 @@ fun ExoItem(
     exo: Exo,
     modifier: Modifier = Modifier
 ) {
+
+//To added ViewModel once Module 4 is done.
+//    val expended = remember { MutableStateFlow(false) }
+//    val expendedValue = expended.collectAsState()
 
     Card(modifier = modifier) {
         Column(modifier = modifier) {
