@@ -1,6 +1,5 @@
-package com.example.strength4mom.ui.theme
+package com.example.strength4mom.ui.theme.theme
 
-import android.graphics.drawable.shapes.Shape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Shapes
 import androidx.compose.ui.unit.dp
