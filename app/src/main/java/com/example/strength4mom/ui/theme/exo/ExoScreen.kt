@@ -1,12 +1,19 @@
 package com.example.strength4mom.ui.theme.exo
 
+import android.graphics.drawable.shapes.Shape
+import android.text.method.Touch
 import androidx.annotation.StringRes
+import androidx.collection.IntIntMap
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ExpandLess
 import androidx.compose.material.icons.filled.ExpandMore
@@ -20,7 +27,10 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import com.example.strength4mom.data.Exo
 import com.example.strength4mom.data.exos
@@ -54,19 +64,27 @@ fun StrengthApp(
 @Composable
 fun ExoItem(
     exo: Exo,
-    exoViewModel: ExoViewModel = viewModel(),
+    exoViewModel: ExoViewModel = viewModel(key = exo.Id.toString()),
     modifier: Modifier = Modifier
 ) {
-
     val exoUiState by exoViewModel.uiState.collectAsState()
 
-    Card(modifier = modifier) {
+    Card(
+        modifier = modifier
+            //Making sure the whole card is clickable to expand
+            .clickable(
+                onClick = { exoViewModel.updateExpanded() }
+            )
+    ) {
         Column(modifier = modifier) {
             Row(modifier = modifier) {
                 ExoInfo(
                     exoName = exo.name,
                     exoSets = exo.numberSet,
                     exoReps = exo.numberRep,
+                    exoImage = exo.imageResourceID,
+                    exoDescription = exo.description,
+                    id = exo.Id
 //                    expanded = exoUiState.expanded,
                 )
             }
@@ -80,8 +98,12 @@ fun ExoInfo(
     @StringRes exoName: Int,
     exoSets: Int,
     exoReps: Int,
+    exoImage: Int,
+    exoDescription: Int,
+    id: Int,
 //    expanded: Boolean,
-    exoViewModel: ExoViewModel = viewModel(),
+    //Generating a viewModel for each exercise to be able to have an independent expanded
+    exoViewModel: ExoViewModel = viewModel(key = id.toString()),
     modifier: Modifier = Modifier
 ) {
     val exoUiState by exoViewModel.uiState.collectAsState()
@@ -111,6 +133,13 @@ fun ExoInfo(
             )
             ExoButton(expanded = exoUiState.expanded, onClick = { exoViewModel.updateExpanded() })
         }
+
+        if (exoUiState.expanded) {
+            ExoExpanded(
+                image = exoImage,
+                exoDescription = exoDescription,
+                modifier = Modifier)
+        }
     }
 }
 
@@ -135,6 +164,21 @@ private fun ExoButton(
     }
 }
 
-//ExoButton
-//ExoImage
-//ExoDescription
+@Composable
+fun ExoExpanded(
+    image: Int,
+    exoDescription: Int,
+    modifier: Modifier
+) {
+    Image(
+        painterResource(image),
+        contentDescription = null,
+        contentScale = ContentScale.Fit,
+        modifier = Modifier
+            .padding(dimensionResource(R.dimen.padding_small))
+            .clip(MaterialTheme.shapes.small)
+    )
+    Text(stringResource(exoDescription))
+}
+
+ExoButton
