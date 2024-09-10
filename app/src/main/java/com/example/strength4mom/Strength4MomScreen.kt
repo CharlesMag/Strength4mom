@@ -7,6 +7,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -26,13 +27,19 @@ import com.example.strength4mom.ui.theme.exo.ExoItem
          * Needed to use viewModel()
          * */
 fun StrengthApp() {
-    LazyColumn() {
-        items(exos) {
-            ExoItem(
-                exo = it,
-                modifier = Modifier
-                    .padding(dimensionResource(R.dimen.padding_small))
-            )
+    Scaffold(
+        topBar = {
+            Strength4MomTopBar()
+        }
+    ) { innerPadding ->
+        LazyColumn() {
+            items(exos) {
+                ExoItem(
+                    exo = it,
+                    modifier = Modifier
+                        .padding(dimensionResource(R.dimen.padding_small))
+                )
+            }
         }
     }
 }
@@ -52,6 +59,5 @@ fun Strength4MomTopBar(modifier: Modifier = Modifier) {
             }
         },
         modifier = Modifier
-            .padding(bottom = 48.dp)
     )
 }

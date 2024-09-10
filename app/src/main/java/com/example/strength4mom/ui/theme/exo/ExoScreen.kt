@@ -61,6 +61,8 @@ fun ExoItem(
                 onClick = { exoViewModel.updateExpanded() }
             )
     ) {
+
+
         Column(modifier = modifier) {
             Row(modifier = modifier) {
                 ExoInfo(
