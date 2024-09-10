@@ -20,9 +20,19 @@ class ExoViewModel : ViewModel() {
             }
         } else {
             //Very common way to update the UiState
-            _uiState.update { currentState -> currentState.copy(
-                expanded = true
-            ) }
+            _uiState.update { currentState ->
+                currentState.copy(
+                    expanded = true
+                )
+            }
+        }
+    }
+
+    fun updateCurrentSet() {
+        _uiState.update { currentState ->
+            currentState.copy(
+                currentSet = currentState.currentSet.inc()
+            )
         }
     }
 }

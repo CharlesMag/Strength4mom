@@ -1,5 +1,7 @@
 [versions]
 agp = "8.5.0"
+androidxComposeBom = "2024.09.00"
+composeBomVersion = "2023.06.01"
 kotlin = "1.9.0"
 coreKtx = "1.13.1"
 junit = "4.13.2"
@@ -9,10 +11,14 @@ lifecycleRuntimeKtx = "2.8.3"
 activityCompose = "1.9.0"
 composeBom = "2024.04.01"
 lifecycleViewmodelCompose = "2.8.4"
+lifecycleViewmodelComposeVersion = "2.6.1"
 
 [libraries]
+androidx-compose-bom-v20230601 = { module = "androidx.compose:compose-bom", version.ref = "composeBomVersion" }
+androidx-compose-bom-v20240900 = { module = "androidx.compose:compose-bom", version.ref = "androidxComposeBom" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycleViewmodelCompose" }
+androidx-lifecycle-viewmodel-compose-v261 = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycleViewmodelComposeVersion" }
 androidx-material-icons-extended = { module = "androidx.compose.material:material-icons-extended" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
