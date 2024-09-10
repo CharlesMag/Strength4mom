@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -48,7 +49,7 @@ import com.example.strength4mom.R
  * Composable displaying the list of exercises with the image and information
  */
 @Composable
-fun ExoItem(
+fun ExoScreenItem(
     exo: Exo,
     exoViewModel: ExoViewModel = viewModel(key = exo.Id.toString()),
     modifier: Modifier = Modifier
@@ -57,25 +58,24 @@ fun ExoItem(
     Card(
         modifier = modifier
             //Making sure the whole card is clickable to expand
+            .width(500.dp)
+            .padding(dimensionResource(R.dimen.padding_small))
             .clickable(
                 onClick = { exoViewModel.updateExpanded() }
             )
     ) {
-
-
-        Column(modifier = modifier) {
-            Row(modifier = modifier) {
-                ExoInfo(
-                    exoName = exo.name,
-                    exoSets = exo.numberSet,
-                    exoReps = exo.numberRep,
-                    exoImage = exo.imageResourceID,
-                    exoDescription = exo.description,
-                    id = exo.Id
-                )
-            }
-        }
+        ExoInfo(
+            exoName = exo.name,
+            exoSets = exo.numberSet,
+            exoReps = exo.numberRep,
+            exoImage = exo.imageResourceID,
+            exoDescription = exo.description,
+            id = exo.Id
+        )
     }
+
+    Spacer(modifier = modifier.size(12.dp))
+
 }
 
 //Composable to add information about the exercise on the card
@@ -96,6 +96,7 @@ fun ExoInfo(
     Column(
         modifier = modifier
             .fillMaxWidth()
+            .padding(dimensionResource(R.dimen.padding_small))
     ) {
         Text(
             text = stringResource(exoName),

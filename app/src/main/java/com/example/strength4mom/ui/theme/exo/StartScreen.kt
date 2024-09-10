@@ -23,7 +23,7 @@ fun StartAppScreen(
         verticalArrangement = Arrangement.Center
     ) {
         Button(
-            onClick = { /*TODO*/ }
+            onClick = onStartWorkoutButtonClicked,
         ) {
             Text(
                 text = stringResource(R.string.StarterScreenButton)
