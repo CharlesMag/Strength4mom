@@ -43,26 +43,6 @@ import com.example.strength4mom.data.exos
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.strength4mom.R
 
-@Composable
-        /**
-         * import androidx.lifecycle.viewmodel.compose.viewModel
-         * Also need to add     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.1")
-         * in gradle.kts
-         * Needed to use viewModel()
-         * */
-fun StrengthApp(
-) {
-    LazyColumn() {
-        items(exos) {
-            ExoItem(
-                exo = it,
-                modifier = Modifier
-                    .padding(dimensionResource(R.dimen.padding_small))
-            )
-        }
-    }
-}
-
 
 /**
  * Composable displaying the list of exercises with the image and information
