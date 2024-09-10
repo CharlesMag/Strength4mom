@@ -5,8 +5,13 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -44,7 +49,9 @@ fun StrengthApp(
     val viewModel: ExoViewModel = viewModel()
 
     Scaffold(
-        topBar = {Strength4MomTopBar()}
+        topBar = {
+            Strength4MomTopBar()
+        }
     ) { innerPadding ->
         val uiState by viewModel.uiState.collectAsState()
         NavHost(
@@ -52,14 +59,14 @@ fun StrengthApp(
             startDestination = Strength4MomScreen.Start.name,
             modifier = Modifier.padding(innerPadding)
         ) {
-           composable(route = Strength4MomScreen.Start.name) {
-               StartAppScreen(
-                   onStartWorkoutButtonClicked = { navHostController.navigate(Strength4MomScreen.ExoScreen.name) },
-                   modifier = Modifier
-                       .fillMaxWidth()
-                       .padding(dimensionResource(R.dimen.padding_medium))
-               )
-           }
+            composable(route = Strength4MomScreen.Start.name) {
+                StartAppScreen(
+                    onStartWorkoutButtonClicked = { navHostController.navigate(Strength4MomScreen.ExoScreen.name) },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(dimensionResource(R.dimen.padding_medium))
+                )
+            }
             composable(route = Strength4MomScreen.ExoScreen.name) {
                 LazyColumn {
                     items(exos) {
@@ -73,15 +80,28 @@ fun StrengthApp(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Strength4MomTopBar(modifier: Modifier = Modifier) {
+fun Strength4MomTopBar(
+    canNavigate: Boolean,
+    navigateUp: () -> Unit,
+    modifier: Modifier = Modifier
+
+    // TODO Create navigateUp and canNavigate variables
+) {
     CenterAlignedTopAppBar(
+        navigationIcon = {
+            if (canNavigate) {
+                IconButton(onClick = navigateUp) {
+                    Icon(imageVector = Icons.AutoMirrored.Filled.ArrowBack, contentDescription = null)
+                }
+            }
+        },
         title = {
             Row(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
                     text = stringResource(id = R.string.app_name),
-                    style = MaterialTheme.typography.displayLarge
+                    style = MaterialTheme.typography.displayMedium
                 )
             }
         },
