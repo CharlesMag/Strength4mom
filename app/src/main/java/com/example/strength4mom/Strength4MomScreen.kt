@@ -8,7 +8,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -29,12 +28,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.strength4mom.data.Exo
 import com.example.strength4mom.data.exos
 import com.example.strength4mom.ui.theme.exo.ExoScreenItem
 import com.example.strength4mom.ui.theme.exo.ExoViewModel
 import com.example.strength4mom.ui.theme.exo.StartAppScreen
-import javax.sql.DataSource
 
 
 @Composable
@@ -46,11 +43,10 @@ import javax.sql.DataSource
          * */
 fun StrengthApp(
     viewModel: ExoViewModel = viewModel(),
-    navHostController: NavHostController = rememberNavController()
+    navHostController: NavHostController = rememberNavController(),
 ) {
     val backStackEntry by navHostController.currentBackStackEntryAsState()
     val currentScreen = Strength4MomScreen.valueOf(backStackEntry?.destination?.route?: Strength4MomScreen.Start.name)
-
     val viewModel: ExoViewModel = viewModel()
 
     Scaffold(
