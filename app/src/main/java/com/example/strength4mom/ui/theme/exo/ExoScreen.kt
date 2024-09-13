@@ -2,7 +2,9 @@ package com.example.strength4mom.ui.theme.exo
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -13,6 +15,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ExpandLess
 import androidx.compose.material.icons.filled.ExpandMore
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -24,6 +27,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
@@ -32,6 +36,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.strength4mom.R
 import com.example.strength4mom.data.Exo
+import com.example.strength4mom.ui.theme.theme.backgroundDark
 
 
 /**
@@ -83,6 +88,7 @@ fun ExoInfo(
     val exoUiState by exoViewModel.uiState.collectAsState()
 
     Column(
+        horizontalAlignment = Alignment.Start,
         modifier = modifier
             .fillMaxWidth()
             .padding(dimensionResource(R.dimen.padding_small))
@@ -92,28 +98,29 @@ fun ExoInfo(
             style = MaterialTheme.typography.displayMedium
         )
         Row(
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween,
+            modifier = Modifier
+                .fillMaxWidth()
         ) {
-            Text(
-                text = stringResource(R.string.sets, exoSets),
-                style = MaterialTheme.typography.displaySmall,
-                modifier = modifier
-                    .weight(1f)
-            )
             Text(
                 text = stringResource(R.string.reps, exoReps),
                 style = MaterialTheme.typography.displaySmall,
                 modifier = modifier
-                    .weight(1f)
+//                    .weight(1f)
             )
+            Button(
+                onClick = {},
+                modifier = Modifier
+//                    .weight(1f)
+            ) {
+                Text(
+                    text = stringResource(R.string.sets, exoUiState.currentSet, exoSets)
+                )
+            }
             ExoButton(
                 expanded = exoUiState.expanded,
                 onClick = { exoViewModel.updateExpanded() }
-            )
-
-            ExOSideButton(
-                exoSets = exoSets,
-                currentSet = exoUiState.currentSet
             )
         }
 
@@ -163,14 +170,4 @@ fun ExoExpanded(
             .clip(MaterialTheme.shapes.small)
     )
     Text(stringResource(exoDescription))
-}
-
-@Composable
-fun ExOSideButton(
-    exoSets: Int,
-    currentSet: Int
-) {
-    Text(
-        text = "${currentSet} / ${exoSets}"
-    )
 }
