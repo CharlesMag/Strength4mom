@@ -1,4 +1,4 @@
-package com.example.strength4mom.ui.theme
+package com.example.strength4mom.ui.theme.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
@@ -34,6 +34,11 @@ val Typography = Typography(
         fontFamily = LaoSansLao,
         fontWeight = FontWeight.Bold,
         fontSize = 20.sp
+    ),
+    displaySmall = TextStyle(
+        fontFamily = LaoSansLao,
+        fontWeight = FontWeight.Normal,
+        fontSize = 14.sp
     ),
     labelSmall = TextStyle(
         fontFamily = LaoSansLao,

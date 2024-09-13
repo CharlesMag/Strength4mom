@@ -1,0 +1,125 @@
+package com.example.strength4mom
+
+import androidx.annotation.StringRes
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.stringResource
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
+import com.example.strength4mom.data.Exo
+import com.example.strength4mom.data.exos
+import com.example.strength4mom.ui.theme.exo.ExoScreenItem
+import com.example.strength4mom.ui.theme.exo.ExoViewModel
+import com.example.strength4mom.ui.theme.exo.StartAppScreen
+import javax.sql.DataSource
+
+
+@Composable
+        /**
+         * import androidx.lifecycle.viewmodel.compose.viewModel
+         * Also need to add     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.1")
+         * in gradle.kts
+         * Needed to use viewModel()
+         * */
+fun StrengthApp(
+    viewModel: ExoViewModel = viewModel(),
+    navHostController: NavHostController = rememberNavController()
+) {
+    val backStackEntry by navHostController.currentBackStackEntryAsState()
+    val currentScreen = Strength4MomScreen.valueOf(backStackEntry?.destination?.route?: Strength4MomScreen.Start.name)
+
+    val viewModel: ExoViewModel = viewModel()
+
+    Scaffold(
+        topBar = {
+            Strength4MomTopBar(
+                currentScreen = currentScreen,
+                canNavigate = navHostController.previousBackStackEntry != null,
+                navigateUp = {navHostController.navigateUp()} ,
+            )
+        }
+    ) { innerPadding ->
+        val uiState by viewModel.uiState.collectAsState()
+        NavHost(
+            navController = navHostController,
+            startDestination = Strength4MomScreen.Start.name,
+            modifier = Modifier.padding(innerPadding)
+        ) {
+            composable(route = Strength4MomScreen.Start.name) {
+                StartAppScreen(
+                    onStartWorkoutButtonClicked = { navHostController.navigate(Strength4MomScreen.ExoScreen.name) },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(dimensionResource(R.dimen.padding_medium))
+                )
+            }
+            composable(route = Strength4MomScreen.ExoScreen.name) {
+                LazyColumn {
+                    items(exos) {
+                        ExoScreenItem(exo = it)
+                    }
+                }
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun Strength4MomTopBar(
+    currentScreen: Strength4MomScreen,
+    canNavigate: Boolean,
+    navigateUp: () -> Unit,
+    modifier: Modifier = Modifier
+
+    // TODO Create navigateUp and canNavigate variables
+) {
+    CenterAlignedTopAppBar(
+        navigationIcon = {
+            if (canNavigate) {
+                IconButton(onClick = navigateUp) {
+                    Icon(imageVector = Icons.AutoMirrored.Filled.ArrowBack, contentDescription = null)
+                }
+            }
+        },
+        title = {
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = stringResource(currentScreen.title),
+                    style = MaterialTheme.typography.displayMedium
+                )
+            }
+        },
+        modifier = Modifier
+    )
+}
+
+enum class Strength4MomScreen(@StringRes val title: Int) {
+    Start(title = R.string.app_name),
+    ExoScreen(title = R.string.workout_page),
+}

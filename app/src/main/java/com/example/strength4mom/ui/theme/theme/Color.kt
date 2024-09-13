@@ -1,4 +1,4 @@
-package com.example.strength4mom.ui.theme
+package com.example.strength4mom.ui.theme.theme
 
 import androidx.compose.ui.graphics.Color
 

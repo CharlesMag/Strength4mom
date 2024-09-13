@@ -1,6 +1,5 @@
-package com.example.strength4mom.ui.theme
+package com.example.strength4mom.ui.theme.theme
 
-import android.graphics.drawable.shapes.Shape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Shapes
 import androidx.compose.ui.unit.dp
@@ -8,5 +7,5 @@ import androidx.compose.ui.unit.dp
 
 val Shapes = Shapes(
     small = RoundedCornerShape(50.dp),
-    medium = RoundedCornerShape(bottomStart = 16.dp, topEnd = 16.dp)
+    medium = RoundedCornerShape(16.dp)
 )
