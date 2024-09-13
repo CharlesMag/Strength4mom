@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ExpandLess
 import androidx.compose.material.icons.filled.ExpandMore
+import androidx.compose.material.icons.outlined.ExpandMore
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
@@ -107,12 +108,10 @@ fun ExoInfo(
                 text = stringResource(R.string.reps, exoReps),
                 style = MaterialTheme.typography.displaySmall,
                 modifier = modifier
-//                    .weight(1f)
             )
             Button(
-                onClick = {},
+                onClick = { exoViewModel.updateCurrentSet() },
                 modifier = Modifier
-//                    .weight(1f)
             ) {
                 Text(
                     text = stringResource(R.string.sets, exoUiState.currentSet, exoSets)
@@ -150,7 +149,6 @@ private fun ExoButton(
         Icon(
             imageVector = if (!expanded) Icons.Filled.ExpandMore else Icons.Filled.ExpandLess,
             contentDescription = stringResource(R.string.expand_button),
-            tint = MaterialTheme.colorScheme.secondary,
         )
     }
 }

@@ -27,7 +27,6 @@ class ExoViewModel : ViewModel() {
             }
         }
     }
-
     fun updateCurrentSet() {
         _uiState.update { currentState ->
             currentState.copy(
