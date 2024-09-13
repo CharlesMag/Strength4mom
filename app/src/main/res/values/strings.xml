@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Strength4Mom</string>
+    <string name="workout_page">Your Workout</string>
     <string name="StarterScreenButton">Start your workout</string>
     <string name="exercise_1">Exercise 1</string>
     <string name="exercise_2">Exercise 2</string>

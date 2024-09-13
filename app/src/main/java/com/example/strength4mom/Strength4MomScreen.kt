@@ -1,5 +1,6 @@
 package com.example.strength4mom
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -26,6 +27,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.strength4mom.data.Exo
 import com.example.strength4mom.data.exos
@@ -46,11 +48,18 @@ fun StrengthApp(
     viewModel: ExoViewModel = viewModel(),
     navHostController: NavHostController = rememberNavController()
 ) {
+    val backStackEntry by navHostController.currentBackStackEntryAsState()
+    val currentScreen = Strength4MomScreen.valueOf(backStackEntry?.destination?.route?: Strength4MomScreen.Start.name)
+
     val viewModel: ExoViewModel = viewModel()
 
     Scaffold(
         topBar = {
-            Strength4MomTopBar()
+            Strength4MomTopBar(
+                currentScreen = currentScreen,
+                canNavigate = navHostController.previousBackStackEntry != null,
+                navigateUp = {navHostController.navigateUp()} ,
+            )
         }
     ) { innerPadding ->
         val uiState by viewModel.uiState.collectAsState()
@@ -81,6 +90,7 @@ fun StrengthApp(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Strength4MomTopBar(
+    currentScreen: Strength4MomScreen,
     canNavigate: Boolean,
     navigateUp: () -> Unit,
     modifier: Modifier = Modifier
@@ -100,7 +110,7 @@ fun Strength4MomTopBar(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = stringResource(id = R.string.app_name),
+                    text = stringResource(currentScreen.title),
                     style = MaterialTheme.typography.displayMedium
                 )
             }
@@ -109,7 +119,7 @@ fun Strength4MomTopBar(
     )
 }
 
-enum class Strength4MomScreen {
-    Start,
-    ExoScreen,
+enum class Strength4MomScreen(@StringRes val title: Int) {
+    Start(title = R.string.app_name),
+    ExoScreen(title = R.string.workout_page),
 }
