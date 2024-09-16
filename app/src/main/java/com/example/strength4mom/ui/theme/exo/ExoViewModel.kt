@@ -1,6 +1,7 @@
 package com.example.strength4mom.ui.theme.exo
 
 import androidx.lifecycle.ViewModel
+import com.example.strength4mom.data.exos
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -27,11 +28,43 @@ class ExoViewModel : ViewModel() {
             }
         }
     }
-    fun updateCurrentSet() {
+
+    fun updateCurrentSet(exoSets: Int) {
+        if (_uiState.value.currentSet < exoSets) {
+
+            _uiState.update { currentState ->
+                currentState.copy(
+                    currentSet = currentState.currentSet.inc()
+                )
+            }
+        } else {
+            resetCurrentSet()
+            updateExoCapsule()
+        }
+    }
+
+    private fun resetCurrentSet() {
         _uiState.update { currentState ->
             currentState.copy(
-                currentSet = currentState.currentSet.inc()
+                currentSet = 0
             )
         }
     }
+
+    private fun updateExoCapsule() {
+        if (uiState.value.exoDone) {
+            _uiState.update {
+                ExoUiState(exoDone = false)
+            }
+        } else {
+            _uiState.update { currentState ->
+                currentState.copy(
+                    exoDone = false
+                )
+            }
+        }
+    }
 }
+
+
+

@@ -2,7 +2,6 @@ package com.example.strength4mom.ui.theme.exo
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -15,7 +14,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ExpandLess
 import androidx.compose.material.icons.filled.ExpandMore
-import androidx.compose.material.icons.outlined.ExpandMore
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
@@ -28,7 +26,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
@@ -37,7 +34,6 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.strength4mom.R
 import com.example.strength4mom.data.Exo
-import com.example.strength4mom.ui.theme.theme.backgroundDark
 
 
 /**
@@ -46,9 +42,11 @@ import com.example.strength4mom.ui.theme.theme.backgroundDark
 @Composable
 fun ExoScreenItem(
     exo: Exo,
+    viewModel: ExoViewModel = viewModel(),
     exoViewModel: ExoViewModel = viewModel(key = exo.Id.toString()),
     modifier: Modifier = Modifier
 ) {
+val uiState by viewModel.uiState.collectAsState()
 
     Card(
         modifier = modifier
@@ -68,9 +66,7 @@ fun ExoScreenItem(
             id = exo.Id
         )
     }
-
     Spacer(modifier = modifier.size(12.dp))
-
 }
 
 //Composable to add information about the exercise on the card
@@ -110,7 +106,7 @@ fun ExoInfo(
                 modifier = modifier
             )
             Button(
-                onClick = { exoViewModel.updateCurrentSet() },
+                onClick = { exoViewModel.updateCurrentSet(exoSets) },
                 modifier = Modifier
             ) {
                 Text(
