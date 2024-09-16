@@ -50,7 +50,7 @@ class ExoViewModel : ViewModel() {
             )
         }
     }
-
+//TODO Try to pass exoSets when equals to currentSet, just change the exoDone value
     private fun updateExoCapsule() {
         if (uiState.value.exoDone) {
             _uiState.update {
@@ -59,7 +59,7 @@ class ExoViewModel : ViewModel() {
         } else {
             _uiState.update { currentState ->
                 currentState.copy(
-                    exoDone = false
+                    exoDone = true
                 )
             }
         }

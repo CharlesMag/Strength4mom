@@ -2,12 +2,14 @@ package com.example.strength4mom.ui.theme.exo
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -26,6 +28,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
@@ -87,6 +90,19 @@ fun ExoInfo(
     Column(
         horizontalAlignment = Alignment.Start,
         modifier = modifier
+            .then(
+                when (exoUiState.exoDone) {
+                    true -> {
+                        Modifier
+                            .background(MaterialTheme.colorScheme.primaryContainer)
+                    }
+
+                    else -> {
+                        Modifier
+                            .background(MaterialTheme.colorScheme.secondaryContainer)
+                    }
+                }
+            )
             .fillMaxWidth()
             .padding(dimensionResource(R.dimen.padding_small))
     ) {
