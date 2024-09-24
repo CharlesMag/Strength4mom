@@ -1,7 +1,14 @@
 package com.example.strength4mom.ui.theme.exo
 
+import android.app.Activity
 import android.util.Log
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -38,24 +45,23 @@ class ExoViewModel : ViewModel() {
                 )
             }
         }
-        Log.d("CurrentSet ExoScreen", "CurrentSet: ViewModel ${exoSets}")
-        Log.d("CurrentSet ExoScreen", "CurrentSet _ui: exoUiState ${_uiState.value.currentSet}")
-        Log.d("CurrentSet ExoScreen", "Update UI_1: ${_uiState.value.exoDone}")
 
         if (uiState.value.currentSet == exoSets) {
             _uiState.update { currentState ->
                 currentState.copy(exoDone = true)
             }
         }
-        if (_uiState.value.currentSet > exoSets) {
-            resetCurrentSet()
-            updateExoCapsule()
-        }
-
     }
 
+    fun decreaseCurrentSet() {
+        _uiState.update { currentState ->
+            currentState.copy(
+                currentSet = currentState.currentSet.dec()
+            )
+        }
+    }
 
-    private fun resetCurrentSet() {
+    fun resetCurrentSet() {
         _uiState.update { currentState ->
             currentState.copy(
                 currentSet = 0
@@ -63,8 +69,7 @@ class ExoViewModel : ViewModel() {
         }
     }
 
-
-    private fun updateExoCapsule() {
+    fun updateExoCapsule() {
         if (!uiState.value.exoDone) {
             _uiState.update { currentState ->
                 currentState.copy(
@@ -80,6 +85,4 @@ class ExoViewModel : ViewModel() {
         }
     }
 }
-
-
 

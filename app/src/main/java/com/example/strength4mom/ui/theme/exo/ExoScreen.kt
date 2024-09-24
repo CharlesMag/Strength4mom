@@ -1,5 +1,6 @@
 package com.example.strength4mom.ui.theme.exo
 
+import android.app.Activity
 import android.util.Log
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
@@ -16,12 +17,14 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ExpandLess
 import androidx.compose.material.icons.filled.ExpandMore
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -29,6 +32,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -36,6 +40,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.strength4mom.R
 import com.example.strength4mom.data.local.Exo
+import com.example.strength4mom.data.local.exos
 
 
 /**
@@ -48,7 +53,7 @@ fun ExoScreenItem(
     exoViewModel: ExoViewModel = viewModel(key = exo.Id.toString()),
     modifier: Modifier = Modifier
 ) {
-val uiState by viewModel.uiState.collectAsState()
+    val uiState by viewModel.uiState.collectAsState()
 
     Card(
         modifier = modifier
@@ -135,6 +140,15 @@ fun ExoInfo(
                 onClick = { exoViewModel.updateExpanded() }
             )
         }
+
+        if (exoUiState.exoDone && exoUiState.currentSet > exoSets ) {
+            ResetPrompt(
+                resetCurrentSet = { exoViewModel.resetCurrentSet() },
+                updateExoCapsule = { exoViewModel.updateExoCapsule() },
+                decreaseCurrentSet = { exoViewModel.decreaseCurrentSet() }
+            )
+        }
+
         if (exoUiState.expanded) {
             ExoExpanded(
                 image = exoImage,
@@ -142,9 +156,8 @@ fun ExoInfo(
                 modifier = Modifier
             )
         }
-        }
-        Log.d("CurrentSet ExoScreen2", "CurrentSet ExoScreen2: ${exoUiState.currentSet}")
     }
+}
 
 //Icon for expandMore or Less for the exercise displaying additional info if expend = true
 //Added Gradle dependency to be able to use icons from https://fonts.google.com/icons
@@ -166,19 +179,54 @@ private fun ExoButton(
     }
 }
 
-    @Composable
-    fun ExoExpanded(
-        image: Int,
-        exoDescription: Int,
-        modifier: Modifier
+@Composable
+fun ExoExpanded(
+    image: Int,
+    exoDescription: Int,
+    modifier: Modifier
+) {
+    Image(
+        painterResource(image),
+        contentDescription = null,
+        contentScale = ContentScale.Fit,
+        modifier = Modifier
+            .padding(dimensionResource(R.dimen.padding_small))
+            .clip(MaterialTheme.shapes.small)
+    )
+    Text(stringResource(exoDescription))
+}
+
+@Composable
+fun ResetPrompt(
+    resetCurrentSet: () -> Unit,
+    updateExoCapsule: () -> Unit,
+    decreaseCurrentSet: () -> Unit,
     ) {
-        Image(
-            painterResource(image),
-            contentDescription = null,
-            contentScale = ContentScale.Fit,
-            modifier = Modifier
-                .padding(dimensionResource(R.dimen.padding_small))
-                .clip(MaterialTheme.shapes.small)
-        )
-        Text(stringResource(exoDescription))
-    }
+    AlertDialog(
+        onDismissRequest = { /*TODO*/ },
+        confirmButton = {
+            TextButton(
+                onClick = {
+                    resetCurrentSet()
+                    updateExoCapsule()
+                }
+            ) {
+                Text(stringResource(R.string.reset_button)) }
+        },
+        title = {
+            Text(stringResource(R.string.reset_title))
+        },
+        text = {
+            Text(stringResource(R.string.reset_body))
+        },
+        dismissButton = {
+            TextButton(
+                onClick = {
+                    decreaseCurrentSet()
+                }
+            ) {
+                Text(stringResource(R.string.reset_cancel))
+            }
+        },
+    )
+}

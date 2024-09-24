@@ -91,8 +91,6 @@ fun Strength4MomTopBar(
     canNavigate: Boolean,
     navigateUp: () -> Unit,
     modifier: Modifier = Modifier
-
-    // TODO Create navigateUp and canNavigate variables
 ) {
     CenterAlignedTopAppBar(
         navigationIcon = {
