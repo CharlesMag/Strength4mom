@@ -1,5 +1,6 @@
 package com.example.strength4mom.ui.theme.exo
 
+import android.util.Log
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -27,7 +28,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
@@ -35,8 +35,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.strength4mom.R
-import com.example.strength4mom.data.Exo
-import com.example.strength4mom.ui.theme.theme.backgroundDark
+import com.example.strength4mom.data.local.Exo
 
 
 /**
@@ -45,9 +44,11 @@ import com.example.strength4mom.ui.theme.theme.backgroundDark
 @Composable
 fun ExoScreenItem(
     exo: Exo,
+    viewModel: ExoViewModel = viewModel(),
     exoViewModel: ExoViewModel = viewModel(key = exo.Id.toString()),
     modifier: Modifier = Modifier
 ) {
+val uiState by viewModel.uiState.collectAsState()
 
     Card(
         modifier = modifier
@@ -67,9 +68,7 @@ fun ExoScreenItem(
             id = exo.Id
         )
     }
-
     Spacer(modifier = modifier.size(12.dp))
-
 }
 
 //Composable to add information about the exercise on the card
@@ -90,6 +89,19 @@ fun ExoInfo(
     Column(
         horizontalAlignment = Alignment.Start,
         modifier = modifier
+            .then(
+                when (exoUiState.exoDone) {
+                    true -> {
+                        Modifier
+                            .background(MaterialTheme.colorScheme.primaryContainer)
+                    }
+
+                    else -> {
+                        Modifier
+                            .background(MaterialTheme.colorScheme.secondaryContainer)
+                    }
+                }
+            )
             .fillMaxWidth()
             .padding(dimensionResource(R.dimen.padding_small))
     ) {
@@ -107,23 +119,22 @@ fun ExoInfo(
                 text = stringResource(R.string.reps, exoReps),
                 style = MaterialTheme.typography.displaySmall,
                 modifier = modifier
-//                    .weight(1f)
             )
             Button(
-                onClick = {},
+                onClick = { exoViewModel.updateCurrentSet(exoSets) },
                 modifier = Modifier
-//                    .weight(1f)
             ) {
                 Text(
                     text = stringResource(R.string.sets, exoUiState.currentSet, exoSets)
                 )
             }
+            Log.d("CurrentSet ExoScreen", "CurrentSet ExoScreen1: ${exoUiState.currentSet}")
+
             ExoButton(
                 expanded = exoUiState.expanded,
                 onClick = { exoViewModel.updateExpanded() }
             )
         }
-
         if (exoUiState.expanded) {
             ExoExpanded(
                 image = exoImage,
@@ -131,8 +142,9 @@ fun ExoInfo(
                 modifier = Modifier
             )
         }
+        }
+        Log.d("CurrentSet ExoScreen2", "CurrentSet ExoScreen2: ${exoUiState.currentSet}")
     }
-}
 
 //Icon for expandMore or Less for the exercise displaying additional info if expend = true
 //Added Gradle dependency to be able to use icons from https://fonts.google.com/icons
@@ -150,24 +162,23 @@ private fun ExoButton(
         Icon(
             imageVector = if (!expanded) Icons.Filled.ExpandMore else Icons.Filled.ExpandLess,
             contentDescription = stringResource(R.string.expand_button),
-            tint = MaterialTheme.colorScheme.secondary,
         )
     }
 }
 
-@Composable
-fun ExoExpanded(
-    image: Int,
-    exoDescription: Int,
-    modifier: Modifier
-) {
-    Image(
-        painterResource(image),
-        contentDescription = null,
-        contentScale = ContentScale.Fit,
-        modifier = Modifier
-            .padding(dimensionResource(R.dimen.padding_small))
-            .clip(MaterialTheme.shapes.small)
-    )
-    Text(stringResource(exoDescription))
-}
+    @Composable
+    fun ExoExpanded(
+        image: Int,
+        exoDescription: Int,
+        modifier: Modifier
+    ) {
+        Image(
+            painterResource(image),
+            contentDescription = null,
+            contentScale = ContentScale.Fit,
+            modifier = Modifier
+                .padding(dimensionResource(R.dimen.padding_small))
+                .clip(MaterialTheme.shapes.small)
+        )
+        Text(stringResource(exoDescription))
+    }
