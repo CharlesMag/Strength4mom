@@ -28,7 +28,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.strength4mom.data.exos
+import com.example.strength4mom.data.local.exos
 import com.example.strength4mom.ui.theme.exo.ExoScreenItem
 import com.example.strength4mom.ui.theme.exo.ExoViewModel
 import com.example.strength4mom.ui.theme.exo.StartAppScreen
@@ -73,6 +73,7 @@ fun StrengthApp(
                 )
             }
             composable(route = Strength4MomScreen.ExoScreen.name) {
+                // exos = listViewmodel.getData
                 LazyColumn {
                     items(exos) {
                         ExoScreenItem(exo = it)

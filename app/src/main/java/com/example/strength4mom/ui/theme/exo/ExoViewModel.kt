@@ -1,7 +1,7 @@
 package com.example.strength4mom.ui.theme.exo
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
-import com.example.strength4mom.data.exos
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -15,9 +15,10 @@ class ExoViewModel : ViewModel() {
 
     fun updateExpanded() {
         if (uiState.value.expanded) {
-            _uiState.update {
-                //Valid way to update ExoUiState, same for the second one
-                ExoUiState(expanded = false)
+            _uiState.update { currentState ->
+                currentState.copy(
+                    expanded = false
+                )
             }
         } else {
             //Very common way to update the UiState
@@ -30,18 +31,29 @@ class ExoViewModel : ViewModel() {
     }
 
     fun updateCurrentSet(exoSets: Int) {
-        if (_uiState.value.currentSet < exoSets) {
-
+        if (uiState.value.currentSet <= exoSets) {
             _uiState.update { currentState ->
                 currentState.copy(
                     currentSet = currentState.currentSet.inc()
                 )
             }
-        } else {
+        }
+        Log.d("CurrentSet ExoScreen", "CurrentSet: ViewModel ${exoSets}")
+        Log.d("CurrentSet ExoScreen", "CurrentSet _ui: exoUiState ${_uiState.value.currentSet}")
+        Log.d("CurrentSet ExoScreen", "Update UI_1: ${_uiState.value.exoDone}")
+
+        if (uiState.value.currentSet == exoSets) {
+            _uiState.update { currentState ->
+                currentState.copy(exoDone = true)
+            }
+        }
+        if (_uiState.value.currentSet > exoSets) {
             resetCurrentSet()
             updateExoCapsule()
         }
+
     }
+
 
     private fun resetCurrentSet() {
         _uiState.update { currentState ->
@@ -50,16 +62,19 @@ class ExoViewModel : ViewModel() {
             )
         }
     }
-//TODO Try to pass exoSets when equals to currentSet, just change the exoDone value
+
+
     private fun updateExoCapsule() {
-        if (uiState.value.exoDone) {
-            _uiState.update {
-                ExoUiState(exoDone = false)
+        if (!uiState.value.exoDone) {
+            _uiState.update { currentState ->
+                currentState.copy(
+                    exoDone = true
+                )
             }
         } else {
             _uiState.update { currentState ->
                 currentState.copy(
-                    exoDone = true
+                    exoDone = false
                 )
             }
         }
