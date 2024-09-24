@@ -15,5 +15,8 @@
     <string name="reps">Reps: %d</string>
     <string name="sets">Sets: %d / %s</string>
     <string name="expand_button">Displays the visual aid for the exercise with additional information</string>
-
+    <string name="reset_button">Reset set</string>
+    <string name="reset_title">Reset your set?</string>
+    <string name="reset_body">Are you sure you want to reset your Set count for this exercise ?</string>
+    <string name="reset_cancel">Cancel</string>
 </resources>

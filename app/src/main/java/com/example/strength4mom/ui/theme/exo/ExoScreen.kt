@@ -211,13 +211,13 @@ fun ResetPrompt(
                     updateExoCapsule()
                 }
             ) {
-                Text(text = "Reset set") }
+                Text(stringResource(R.string.reset_button)) }
         },
         title = {
-            Text(text = "Reset your set?")
+            Text(stringResource(R.string.reset_title))
         },
         text = {
-            Text(text = "Are you sure you want to reset your Set ?")
+            Text(stringResource(R.string.reset_body))
         },
         dismissButton = {
             TextButton(
@@ -225,7 +225,7 @@ fun ResetPrompt(
                     decreaseCurrentSet()
                 }
             ) {
-                Text(text = "Cancel")
+                Text(stringResource(R.string.reset_cancel))
             }
         },
     )
