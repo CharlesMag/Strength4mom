@@ -72,4 +72,5 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.androidx.lifecycle.viewmodel.compose.v261)
     implementation(libs.androidx.material.icons.extended)
+    implementation("androidx.compose.material3:material3-window-size-class")
 }

@@ -13,10 +13,10 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlin.math.absoluteValue
 
 class ExoViewModel : ViewModel() {
     //Exo UI state
-
     private val _uiState = MutableStateFlow(ExoUiState())
     val uiState: StateFlow<ExoUiState> = _uiState.asStateFlow()
 
@@ -28,7 +28,6 @@ class ExoViewModel : ViewModel() {
                 )
             }
         } else {
-            //Very common way to update the UiState
             _uiState.update { currentState ->
                 currentState.copy(
                     expanded = true
@@ -37,26 +36,53 @@ class ExoViewModel : ViewModel() {
         }
     }
 
-    fun updateCurrentSet(exoSets: Int) {
-        if (uiState.value.currentSet <= exoSets) {
+    fun triageCurrentSet(exoSets: Int) {
+        val exoSetsMax = exoSets - 1
+        when (uiState.value.currentSet) {
+            in 0 .. exoSetsMax -> { updateCurrentSet(exoSets) }
+            exoSets.absoluteValue -> {
+                updateCurrentSetGhost()
+                _uiState.update { currentState ->
+                    currentState.copy(
+                        exoDone = true
+                    )
+                }
+            }
+            else -> { updateCurrentSetGhost() }
+        }
+    }
+
+    private fun updateCurrentSetGhost() {
             _uiState.update { currentState ->
                 currentState.copy(
-                    currentSet = currentState.currentSet.inc()
+                    currentSetGhost = currentState.currentSetGhost.inc(),
+                )
+            }
+    }
+
+    private fun updateCurrentSet(exoSets: Int) {
+        if (uiState.value.currentSet < exoSets) {
+            _uiState.update { currentState ->
+                currentState.copy(
+                    currentSet = currentState.currentSet.inc(),
+                    currentSetGhost = currentState.currentSetGhost.inc()
                 )
             }
         }
 
         if (uiState.value.currentSet == exoSets) {
             _uiState.update { currentState ->
-                currentState.copy(exoDone = true)
+                currentState.copy(
+                    exoDone = true,
+                )
             }
         }
     }
 
-    fun decreaseCurrentSet() {
+    fun closeOpenDialog() {
         _uiState.update { currentState ->
             currentState.copy(
-                currentSet = currentState.currentSet.dec()
+                currentSetGhost = currentState.currentSetGhost.dec(),
             )
         }
     }
@@ -64,7 +90,8 @@ class ExoViewModel : ViewModel() {
     fun resetCurrentSet() {
         _uiState.update { currentState ->
             currentState.copy(
-                currentSet = 0
+                currentSet = 0,
+                currentSetGhost = 0,
             )
         }
     }
@@ -85,4 +112,3 @@ class ExoViewModel : ViewModel() {
         }
     }
 }
-

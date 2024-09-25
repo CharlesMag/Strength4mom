@@ -15,6 +15,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -32,6 +33,8 @@ import com.example.strength4mom.data.local.exos
 import com.example.strength4mom.ui.theme.exo.ExoScreenItem
 import com.example.strength4mom.ui.theme.exo.ExoViewModel
 import com.example.strength4mom.ui.theme.exo.StartAppScreen
+import com.example.strength4mom.ui.theme.utils.StrengthNavigationApp
+
 
 
 @Composable
@@ -43,11 +46,28 @@ import com.example.strength4mom.ui.theme.exo.StartAppScreen
          * */
 fun StrengthApp(
     viewModel: ExoViewModel = viewModel(),
+    windowSize: WindowWidthSizeClass,
     navHostController: NavHostController = rememberNavController(),
 ) {
     val backStackEntry by navHostController.currentBackStackEntryAsState()
     val currentScreen = Strength4MomScreen.valueOf(backStackEntry?.destination?.route?: Strength4MomScreen.Start.name)
     val viewModel: ExoViewModel = viewModel()
+
+    val navigationType: StrengthNavigationApp
+    when (windowSize) {
+        WindowWidthSizeClass.Compact -> {
+            navigationType = StrengthNavigationApp.BOTTOM_NAVIGATION
+        }
+        WindowWidthSizeClass.Medium -> {
+            navigationType = StrengthNavigationApp.NAVIGATION_RAIL
+        }
+        WindowWidthSizeClass.Expanded -> {
+            navigationType = StrengthNavigationApp.PERMANENT_NAVIGATION_DRAWER
+        }
+        else -> {
+            navigationType = StrengthNavigationApp.BOTTOM_NAVIGATION
+        }
+    }
 
     Scaffold(
         topBar = {
@@ -67,6 +87,7 @@ fun StrengthApp(
             composable(route = Strength4MomScreen.Start.name) {
                 StartAppScreen(
                     onStartWorkoutButtonClicked = { navHostController.navigate(Strength4MomScreen.ExoScreen.name) },
+                    windowSize = WindowWidthSizeClass.Compact,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(dimensionResource(R.dimen.padding_medium))
@@ -76,7 +97,7 @@ fun StrengthApp(
                 // exos = listViewmodel.getData
                 LazyColumn {
                     items(exos) {
-                        ExoScreenItem(exo = it)
+                        ExoScreenItem(exo = it, windowSize)
                     }
                 }
             }
