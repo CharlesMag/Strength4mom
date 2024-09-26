@@ -45,7 +45,7 @@ fun StrengthAppPreview() {
     Strength4MomTheme {
         Surface {
             StartAppScreen(
-                windowSize = WindowWidthSizeClass.Compact,
+                windowSize = WindowWidthSizeClass.Medium,
                 onStartWorkoutButtonClicked = {},
             )
         }

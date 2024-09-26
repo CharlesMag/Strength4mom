@@ -1,8 +1,5 @@
 package com.example.strength4mom.ui.theme.exo
 
-import android.app.Activity
-import android.app.AlertDialog
-import android.util.Log
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -14,7 +11,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ExpandLess
 import androidx.compose.material.icons.filled.ExpandMore
@@ -35,7 +31,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -43,8 +38,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.strength4mom.R
-import com.example.strength4mom.data.local.Exo
-import com.example.strength4mom.data.local.exos
+import com.example.strength4mom.data.local.DataSourceExercises
+import com.example.strength4mom.model.ExoItem
+import com.example.strength4mom.ui.theme.previews.ExoPreviewObject
+//import com.example.strength4mom.ui.theme.previews.ExoPreviewObject
 import com.example.strength4mom.ui.theme.theme.Strength4MomTheme
 
 
@@ -53,7 +50,7 @@ import com.example.strength4mom.ui.theme.theme.Strength4MomTheme
  */
 @Composable
 fun ExoScreenItem(
-    exo: Exo,
+    exo: ExoItem.Exo,
     windowSize: WindowWidthSizeClass,
     viewModel: ExoViewModel = viewModel(),
     exoViewModel: ExoViewModel = viewModel(key = exo.Id.toString()),
@@ -249,4 +246,17 @@ fun ResetPrompt(
             }
         },
     )
+}
+
+@Preview(showBackground = false)
+@Composable
+fun ExoScreenItemPreview() {
+    Strength4MomTheme {
+        Surface {
+            ExoScreenItem(
+                windowSize = WindowWidthSizeClass.Expanded,
+                exo = ExoPreviewObject.exoPreviewObject
+            )
+        }
+    }
 }
