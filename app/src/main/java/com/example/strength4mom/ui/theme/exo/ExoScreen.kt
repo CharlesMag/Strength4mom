@@ -1,7 +1,6 @@
 package com.example.strength4mom.ui.theme.exo
 
-import android.app.Activity
-import android.util.Log
+//import com.example.strength4mom.ui.theme.previews.ExoPreviewObject
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -13,7 +12,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ExpandLess
 import androidx.compose.material.icons.filled.ExpandMore
@@ -23,8 +21,10 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -32,15 +32,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.strength4mom.R
-import com.example.strength4mom.data.local.Exo
-import com.example.strength4mom.data.local.exos
+import com.example.strength4mom.model.ExoItem
+import com.example.strength4mom.ui.theme.previews.ExoPreviewObject
+import com.example.strength4mom.ui.theme.theme.Strength4MomTheme
 
 
 /**
@@ -48,7 +49,8 @@ import com.example.strength4mom.data.local.exos
  */
 @Composable
 fun ExoScreenItem(
-    exo: Exo,
+    exo: ExoItem.Exo,
+    windowSize: WindowWidthSizeClass,
     viewModel: ExoViewModel = viewModel(),
     exoViewModel: ExoViewModel = viewModel(key = exo.Id.toString()),
     modifier: Modifier = Modifier
@@ -58,7 +60,6 @@ fun ExoScreenItem(
     Card(
         modifier = modifier
             //Making sure the whole card is clickable to expand
-            .width(500.dp)
             .padding(dimensionResource(R.dimen.padding_small))
             .clickable(
                 onClick = { exoViewModel.updateExpanded() }
@@ -92,7 +93,7 @@ fun ExoInfo(
     val exoUiState by exoViewModel.uiState.collectAsState()
 
     Column(
-        horizontalAlignment = Alignment.Start,
+        horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
             .then(
                 when (exoUiState.exoDone) {
@@ -126,26 +127,44 @@ fun ExoInfo(
                 modifier = modifier
             )
             Button(
-                onClick = { exoViewModel.updateCurrentSet(exoSets) },
+                onClick = { exoViewModel.triageCurrentSet(exoSets) },
                 modifier = Modifier
             ) {
                 Text(
                     text = stringResource(R.string.sets, exoUiState.currentSet, exoSets)
                 )
             }
-            Log.d("CurrentSet ExoScreen", "CurrentSet ExoScreen1: ${exoUiState.currentSet}")
-
             ExoButton(
                 expanded = exoUiState.expanded,
                 onClick = { exoViewModel.updateExpanded() }
             )
         }
 
-        if (exoUiState.exoDone && exoUiState.currentSet > exoSets ) {
-            ResetPrompt(
-                resetCurrentSet = { exoViewModel.resetCurrentSet() },
-                updateExoCapsule = { exoViewModel.updateExoCapsule() },
-                decreaseCurrentSet = { exoViewModel.decreaseCurrentSet() }
+        if (exoUiState.currentSetGhost > exoSets) {
+            AlertDialog(
+                onDismissRequest = { exoViewModel.closeOpenDialog()},
+                confirmButton = {
+                    TextButton(
+                        onClick = {
+                            exoViewModel.resetCurrentSet()
+                            exoViewModel.updateExoCapsule()
+                        }
+                    ) {
+                        Text(stringResource(R.string.reset_button)) }
+                },
+                title = {
+                    Text(stringResource(R.string.reset_title))
+                },
+                text = {
+                    Text(stringResource(R.string.reset_body))
+                },
+                dismissButton = {
+                    TextButton(
+                        onClick = { exoViewModel.closeOpenDialog() }
+                    ) {
+                        Text(stringResource(R.string.reset_cancel))
+                    }
+                },
             )
         }
 
@@ -200,10 +219,9 @@ fun ExoExpanded(
 fun ResetPrompt(
     resetCurrentSet: () -> Unit,
     updateExoCapsule: () -> Unit,
-    decreaseCurrentSet: () -> Unit,
     ) {
     AlertDialog(
-        onDismissRequest = { /*TODO*/ },
+        onDismissRequest = {},
         confirmButton = {
             TextButton(
                 onClick = {
@@ -221,12 +239,71 @@ fun ResetPrompt(
         },
         dismissButton = {
             TextButton(
-                onClick = {
-                    decreaseCurrentSet()
-                }
+                onClick = {}
             ) {
                 Text(stringResource(R.string.reset_cancel))
             }
         },
     )
+}
+
+@Preview(showBackground = false)
+@Composable
+fun ExoScreenItemPreviewCompact() {
+    Strength4MomTheme {
+        Surface {
+            ExoScreenItem(
+                windowSize = WindowWidthSizeClass.Compact,
+                exo = ExoPreviewObject.exoPreviewObject
+            )
+        }
+    }
+}
+
+@Preview(showBackground = false, widthDp = 700)
+@Composable
+fun ExoScreenItemPreviewMedium() {
+    Strength4MomTheme {
+        Surface {
+            ExoScreenItem(
+                windowSize = WindowWidthSizeClass.Medium,
+                exo = ExoPreviewObject.exoPreviewObject
+            )
+        }
+    }
+}
+
+@Preview(showBackground = false, widthDp = 1000)
+@Composable
+fun ExoScreenItemPreviewExpanded() {
+    Strength4MomTheme {
+        Surface {
+            ExoScreenItem(
+                windowSize = WindowWidthSizeClass.Expanded,
+                exo = ExoPreviewObject.exoPreviewObject
+            )
+        }
+    }
+}
+
+@Preview(showBackground = false, widthDp = 1000)
+@Composable
+fun ExoScreenItemPreviewExpandedExpanded() {
+    Strength4MomTheme {
+        Surface {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(dimensionResource(R.dimen.padding_small))
+            ) {
+                ExoScreenItem(
+                    windowSize = WindowWidthSizeClass.Expanded,
+                    exo = ExoPreviewObject.exoPreviewObject
+                )
+                ExoExpanded(image = ExoPreviewObject.exoPreviewObject.imageResourceID, exoDescription = ExoPreviewObject.exoPreviewObject.description, modifier = Modifier)
+
+            }
+        }
+    }
 }
