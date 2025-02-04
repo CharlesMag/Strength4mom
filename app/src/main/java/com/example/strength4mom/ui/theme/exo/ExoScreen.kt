@@ -1,5 +1,6 @@
 package com.example.strength4mom.ui.theme.exo
 
+//import com.example.strength4mom.ui.theme.previews.ExoPreviewObject
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -38,10 +39,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.strength4mom.R
-import com.example.strength4mom.data.local.DataSourceExercises
 import com.example.strength4mom.model.ExoItem
 import com.example.strength4mom.ui.theme.previews.ExoPreviewObject
-//import com.example.strength4mom.ui.theme.previews.ExoPreviewObject
 import com.example.strength4mom.ui.theme.theme.Strength4MomTheme
 
 
@@ -250,13 +249,61 @@ fun ResetPrompt(
 
 @Preview(showBackground = false)
 @Composable
-fun ExoScreenItemPreview() {
+fun ExoScreenItemPreviewCompact() {
+    Strength4MomTheme {
+        Surface {
+            ExoScreenItem(
+                windowSize = WindowWidthSizeClass.Compact,
+                exo = ExoPreviewObject.exoPreviewObject
+            )
+        }
+    }
+}
+
+@Preview(showBackground = false, widthDp = 700)
+@Composable
+fun ExoScreenItemPreviewMedium() {
+    Strength4MomTheme {
+        Surface {
+            ExoScreenItem(
+                windowSize = WindowWidthSizeClass.Medium,
+                exo = ExoPreviewObject.exoPreviewObject
+            )
+        }
+    }
+}
+
+@Preview(showBackground = false, widthDp = 1000)
+@Composable
+fun ExoScreenItemPreviewExpanded() {
     Strength4MomTheme {
         Surface {
             ExoScreenItem(
                 windowSize = WindowWidthSizeClass.Expanded,
                 exo = ExoPreviewObject.exoPreviewObject
             )
+        }
+    }
+}
+
+@Preview(showBackground = false, widthDp = 1000)
+@Composable
+fun ExoScreenItemPreviewExpandedExpanded() {
+    Strength4MomTheme {
+        Surface {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(dimensionResource(R.dimen.padding_small))
+            ) {
+                ExoScreenItem(
+                    windowSize = WindowWidthSizeClass.Expanded,
+                    exo = ExoPreviewObject.exoPreviewObject
+                )
+                ExoExpanded(image = ExoPreviewObject.exoPreviewObject.imageResourceID, exoDescription = ExoPreviewObject.exoPreviewObject.description, modifier = Modifier)
+
+            }
         }
     }
 }
