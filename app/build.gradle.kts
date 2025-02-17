@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
+    alias(libs.plugins.compose.compiler)
 }
 
 android {
@@ -77,4 +78,10 @@ dependencies {
     annotationProcessor(libs.compiler)
     implementation(libs.support.annotations)
     annotationProcessor(libs.support.annotations)
+    implementation("com.squareup.retrofit2:retrofit:2.11.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.11.0") // for JSON conversion
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.1") // Coroutines
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.8.7") // LiveData
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.7") // ViewModel
+    implementation("com.squareup.okhttp3:logging-interceptor:4.9.1")
 }
