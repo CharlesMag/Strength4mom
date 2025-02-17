@@ -1,4 +1,4 @@
-package com.example.strength4mom.ui.theme.exo
+package com.example.strength4mom.ui.theme
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -13,13 +13,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.strength4mom.R
-import com.example.strength4mom.StrengthApp
 import com.example.strength4mom.ui.theme.theme.Strength4MomTheme
 
 
 @Composable
 fun StartAppScreen(
     onStartWorkoutButtonClicked: () -> Unit,
+    onStartSearchButtonClicked: () -> Unit,
     windowSize: WindowWidthSizeClass,
     modifier: Modifier = Modifier
 ) {
@@ -36,6 +36,13 @@ fun StartAppScreen(
                 text = stringResource(R.string.StarterScreenButton)
             )
         }
+        Button(
+            onClick = onStartSearchButtonClicked,
+        ) {
+            Text(
+                text = "Search Page",
+            )
+        }
     }
 }
 
@@ -47,6 +54,7 @@ fun StrengthAppPreview() {
             StartAppScreen(
                 windowSize = WindowWidthSizeClass.Medium,
                 onStartWorkoutButtonClicked = {},
+                onStartSearchButtonClicked = {},
             )
         }
     }
